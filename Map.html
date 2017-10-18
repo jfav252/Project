@@ -13,35 +13,35 @@
 
 	var width = 720,
 		height = 500;
-
-	var projection = d3.geoAlbers()
-		.scale(1000)
-		.translate([width / 2, height / 2]);
-
-	var path = d3.geoPath()
+	
+	var projection = d3.geoAlbersUsa()
+		.fitExtent([[20,20], [460, 580] ], atlanta)
+	
+	var geoPath = d3.geoPath()
 		.projection(projection);
-
+	
 	var svg = d3.select("body").append("svg")
 		.attr("width", width)
 		.attr("height", height);
-
-	d3.queue()
-		.defer(d3.json, "http://duspviz.mit.edu/_assets/data/us.json")
-		.defer(d3.json, "http://duspviz.mit.edu/_assets/data/us.json")
+		
+	queue()
+		.defer(d3.json, "https://github.com/jfav252/Project/blob/master/Data/map.topojson")
 		.await(ready);
-
-	function ready(error, us) {
-	  if (error) throw error;
-
-	  svg.append("g")
-		  .attr("class", "counties")
-		.selectAll("path")
-		  .data(topojson.feature(us, us.objects.counties).features)
-		.enter().append("path")
-		  .attr("d", path)
-		  .style("fill", "white")
-		  .style("stroke", "black");
+		
+	function read(error, atl) {
+		if (error) throw error;
+		
+		svg.append("g")
+			.attr("class", "collection")
+			.selectAll("path")
+			.data(topojson.feature(atl, atl.objects.collection).features)
+			.enter().append("path")
+			.attr("d", path)
+			.style("fill", "white")
+			.style("stroke", "black");
 	}
+		
+	
 
 	</script>
 </body>
